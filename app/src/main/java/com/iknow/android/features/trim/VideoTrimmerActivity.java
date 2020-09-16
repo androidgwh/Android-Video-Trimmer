@@ -10,8 +10,13 @@ import androidx.fragment.app.FragmentActivity;
 import com.iknow.android.R;
 import com.iknow.android.databinding.ActivityVideoTrimBinding;
 import com.iknow.android.features.common.ui.BaseActivity;
+import com.iknow.android.features.compress.VideoCompressor;
+import com.iknow.android.interfaces.VideoCompressListener;
 import com.iknow.android.interfaces.VideoTrimListener;
+import com.iknow.android.utils.StorageUtil;
 import com.iknow.android.utils.ToastUtil;
+
+import java.io.File;
 
 /**
  * Author：J.Chou
@@ -73,20 +78,19 @@ public class VideoTrimmerActivity extends BaseActivity implements VideoTrimListe
     ToastUtil.longShow(this, getString(R.string.trimmed_done));
     finish();
     //TODO: please handle your trimmed video url here!!!
-    //String out = StorageUtil.getCacheDir() + File.separator + COMPRESSED_VIDEO_FILE_NAME;
-    //buildDialog(getResources().getString(R.string.compressing)).show();
-    //VideoCompressor.compress(this, in, out, new VideoCompressListener() {
-    //  @Override public void onSuccess(String message) {
-    //  }
-    //
-    //  @Override public void onFailure(String message) {
-    //  }
-    //
-    //  @Override public void onFinish() {
-    //    if (mProgressDialog.isShowing()) mProgressDialog.dismiss();
-    //    finish();
-    //  }
-    //});
+    String out = StorageUtil.getCacheDir() + File.separator + COMPRESSED_VIDEO_FILE_NAME;
+    VideoCompressor.compress(this, in, out, new VideoCompressListener() {
+      @Override public void onSuccess(String message) {
+      }
+
+      @Override public void onFailure(String message) {
+      }
+
+      @Override public void onFinish() {
+        if (mProgressDialog.isShowing()) mProgressDialog.dismiss();
+        finish();
+      }
+    });
   }
 
   @Override public void onCancel() {
